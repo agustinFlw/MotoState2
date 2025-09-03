@@ -7,4 +7,9 @@
     <RootNamespace>MotoState__.NetCore_Razor</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\preuba de que todo ande bien el git\MotoState2\Dominio\Dominio.csproj" />
+    <ProjectReference Include="..\..\preuba de que todo ande bien el git\MotoState2\Negocio\Negocio.csproj" />
+  </ItemGroup>
+
 </Project>
