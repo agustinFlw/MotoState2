@@ -27,18 +27,18 @@ namespace Negocio
             Env.Load();
 
             string password = Env.GetString("PG_PASSWORD");
-            // Cambiá los valores según tu base en PostgreSQL
-            conexion = new NpgsqlConnection("Host=localhost; Database=motoState; Username=postgres; Password=tu_password");
+            // valores según base en PostgreSQL
+            conexion = new NpgsqlConnection("Host=localhost; Port=5432; Database=motoState; Username=postgres; Password={password}");
             comando = new NpgsqlCommand();
         }
 
-        public void setearConsulta(string consulta)
+        public void SetearConsulta(string consulta)
         {
             comando.CommandType = CommandType.Text;
             comando.CommandText = consulta;
         }
 
-        public void ejecutarLectura()
+        public void EjecutarLectura()
         {
             comando.Connection = conexion;
             try
@@ -52,7 +52,7 @@ namespace Negocio
             }
         }
 
-        public void ejecutarAccion()
+        public void EjecutarAccion()
         {
             comando.Connection = conexion;
             try
@@ -66,12 +66,12 @@ namespace Negocio
             }
         }
 
-        public void setearParametro(string nombre, object valor)
+        public void SetearParametro(string nombre, object valor)
         {
             comando.Parameters.AddWithValue(nombre, valor ?? DBNull.Value);
         }
 
-        public void cerrarConexion()
+        public void CerrarConexion()
         {
             if (lector != null && !lector.IsClosed)
                 lector.Close();
@@ -79,14 +79,14 @@ namespace Negocio
         }
 
         // Ejemplo: obtener id de un usuario por email
-        public int obtenerIdUsuario(string email)
+        public int ObtenerIdUsuario(string email)
         {
             int id = 0;
             try
             {
-                setearConsulta("SELECT id_usuario FROM Usuario WHERE email = @Email");
-                setearParametro("@Email", email);
-                ejecutarLectura();
+                SetearConsulta("SELECT id_usuario FROM Usuario WHERE email = @Email");
+                SetearParametro("@Email", email);
+                EjecutarLectura();
 
                 if (Lector.Read())
                 {
@@ -99,7 +99,7 @@ namespace Negocio
             }
             finally
             {
-                cerrarConexion();
+                CerrarConexion();
             }
             return id;
         }

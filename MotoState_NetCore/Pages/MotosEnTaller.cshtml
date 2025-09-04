@@ -22,6 +22,27 @@
 <!-- Pizarra de Motos -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 perspective-1000">
 
+      <!-- Tarjeta Skeleton -->
+    <div class="card-container">
+        <div class="card-body border rounded-xl shadow p-4 flex flex-col bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
+            <div class="flex flex-col gap-4 w-full">
+                @* <div class="skeleton h-32 w-full rounded-xl"></div> *@
+                <div class="skeleton h-32 w-full rounded-xl flex items-center justify-center">
+                    <img src="~/images/iconos/motoIcono.png" 
+                         alt=""
+                         class="h-21 w-21 object-contain opacity-50" />
+                </div>
+
+                <div class="skeleton h-4 w-28"></div>
+                <div class="skeleton h-4 w-full"></div>
+                <div class="skeleton h-4 w-full"></div>
+                <button class="flex items-center justify-center gap-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">
+                        <i data-feather="plus" class="w-4 h-4"></i>
+                        Agregar nueva moto
+                    </button>
+            </div>
+        </div>
+    </div>
     <!-- Tarjeta 1 -->
     <div class="card-container">
         <div class="card-body border rounded-xl shadow p-4 flex flex-col bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700 transition-transform duration-500 group/card">
@@ -110,21 +131,6 @@
         </div>
     </div>
     
-  <!-- Tarjeta Skeleton -->
-<div class="card-container">
-    <div class="card-body border rounded-xl shadow p-4 flex flex-col bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
-        <div class="flex flex-col gap-4 w-full">
-            <div class="skeleton h-32 w-full rounded-xl"></div>
-            <div class="skeleton h-4 w-28"></div>
-            <div class="skeleton h-4 w-full"></div>
-            <div class="skeleton h-4 w-full"></div>
-            <button class="flex items-center justify-center gap-2 bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600 transition">
-                    <i data-feather="plus" class="w-4 h-4"></i>
-                    Agregar nueva moto
-                </button>
-        </div>
-    </div>
-</div>
 
 
 </div>
