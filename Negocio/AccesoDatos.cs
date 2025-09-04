@@ -7,7 +7,7 @@ using Npgsql;
 // Driver PostgreSQL
 using Dominio;
 using System.Data;
-
+using DotNetEnv;
 namespace Negocio
 {
     public class AccesoDatos
@@ -23,6 +23,10 @@ namespace Negocio
 
         public AccesoDatos()
         {
+            // Cargar variables del archivo .env
+            Env.Load();
+
+            string password = Env.GetString("PG_PASSWORD");
             // Cambiá los valores según tu base en PostgreSQL
             conexion = new NpgsqlConnection("Host=localhost; Database=motoState; Username=postgres; Password=tu_password");
             comando = new NpgsqlCommand();
