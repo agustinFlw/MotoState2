@@ -1,0 +1,67 @@
+﻿@page
+@model AltaMotoModel
+@{
+    ViewData["Title"] = "Agregar Nueva Moto";
+}
+
+<h2 class="text-2xl font-bold mb-6">Agregar Nueva Moto</h2>
+
+<form method="post" class="bg-white dark:bg-gray-900 shadow-md rounded-xl p-8 max-w-2xl mx-auto border border-gray-200 dark:border-gray-700 space-y-6">
+
+    <!-- Marca -->
+    <div>
+        <label class="block text-sm font-medium mb-1">Marca</label>
+        <input asp-for="Moto.Marca" class="input input-bordered w-full" placeholder="Ej: Honda" />
+    </div>
+
+    <!-- Modelo -->
+    <div>
+        <label class="block text-sm font-medium mb-1">Modelo</label>
+        <input asp-for="Moto.Modelo" class="input input-bordered w-full" placeholder="Ej: CBR500R" />
+    </div>
+
+    <!-- Cilindrada -->
+    <div>
+        <label class="block text-sm font-medium mb-1">Cilindrada</label>
+        <input asp-for="Moto.Cilindrada" class="input input-bordered w-full" placeholder="Ej: 500cc" />
+    </div>
+
+    <!-- Fecha de Ingreso -->
+    <div>
+        <label class="block text-sm font-medium mb-1">Fecha de ingreso</label>
+        <input asp-for="Moto.FechaIngreso" type="date" class="input input-bordered w-full" />
+    </div>
+
+    <!-- Foto URL -->
+    <div>
+        <label class="block text-sm font-medium mb-1">Foto URL</label>
+        <input asp-for="Moto.FotoUrl" class="input input-bordered w-full" placeholder="https://..." />
+    </div>
+
+    <!-- Foto subida -->
+    <div>
+        <label class="block text-sm font-medium mb-1">¿Foto subida?</label>
+        <select asp-for="Moto.FotoSubida" class="select select-bordered w-full">
+            <option value="1">Sí</option>
+            <option value="0">No</option>
+        </select>
+    </div>
+
+    <!-- Usuario (temporal, se puede automatizar luego) -->
+    <div>
+        <label class="block text-sm font-medium mb-1">ID Usuario</label>
+        <input asp-for="Moto.IdUsuario" type="number" class="input input-bordered w-full" placeholder="Ej: 1" />
+    </div>
+
+    <!-- Botones -->
+    <div class="flex justify-between items-center mt-6">
+        <a href="/MotosEnTaller" class="btn btn-ghost">Cancelar</a>
+        <button type="submit" class="btn bg-blue-500 text-white hover:bg-blue-600">
+            <i data-feather="save" class="w-4 h-4 mr-2"></i> Guardar Moto
+        </button>
+    </div>
+</form>
+
+@section Scripts {
+    <script>feather.replace()</script>
+}
