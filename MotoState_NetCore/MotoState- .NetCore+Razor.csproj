@@ -11,15 +11,18 @@
     <PackageReference Include="Npgsql" Version="9.0.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\preuba de que todo ande bien el git\MotoState2\Dominio\Dominio.csproj" />
-    <ProjectReference Include="..\..\preuba de que todo ande bien el git\MotoState2\Negocio\Negocio.csproj" />
-    <ProjectReference Include="..\Dominio\Dominio.csproj" />
-    <ProjectReference Include="..\Negocio\Negocio.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Dominio\Dominio.csproj" />
+		<ProjectReference Include="..\Negocio\Negocio.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
+
+	<ItemGroup>
     <Folder Include="wwwroot\images\iconos\" />
   </ItemGroup>
+
+	<PropertyGroup>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
 
 </Project>

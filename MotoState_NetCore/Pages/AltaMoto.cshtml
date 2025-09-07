@@ -8,52 +8,53 @@
 
 <form method="post" class="bg-white dark:bg-gray-900 shadow-md rounded-xl p-8 max-w-2xl mx-auto border border-gray-200 dark:border-gray-700 space-y-6">
 
-    <!-- Marca -->
+    <div asp-validation-summary="ModelOnly" class="text-red-600 mb-4"></div>
+
     <div>
         <label class="block text-sm font-medium mb-1">Marca</label>
         <input asp-for="Moto.Marca" class="input input-bordered w-full" placeholder="Ej: Honda" />
+        <span asp-validation-for="Moto.Marca" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Modelo -->
     <div>
         <label class="block text-sm font-medium mb-1">Modelo</label>
         <input asp-for="Moto.Modelo" class="input input-bordered w-full" placeholder="Ej: CBR500R" />
+        <span asp-validation-for="Moto.Modelo" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Cilindrada -->
     <div>
-        <label class="block text-sm font-medium mb-1">Cilindrada</label>
-        <input asp-for="Moto.Cilindrada" class="input input-bordered w-full" placeholder="Ej: 500cc" />
+        <label class="block text-sm font-medium mb-1">Patente</label>
+        <input asp-for="Moto.Patente" class="input input-bordered w-full" placeholder="Ej: AAA 123" />
+        <span asp-validation-for="Moto.Patente" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Fecha de Ingreso -->
     <div>
         <label class="block text-sm font-medium mb-1">Fecha de ingreso</label>
         <input asp-for="Moto.FechaIngreso" type="date" class="input input-bordered w-full" />
+        <span asp-validation-for="Moto.FechaIngreso" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Foto URL -->
     <div>
         <label class="block text-sm font-medium mb-1">Foto URL</label>
         <input asp-for="Moto.FotoUrl" class="input input-bordered w-full" placeholder="https://..." />
+        <span asp-validation-for="Moto.FotoUrl" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Foto subida -->
     <div>
         <label class="block text-sm font-medium mb-1">¿Foto subida?</label>
         <select asp-for="Moto.FotoSubida" class="select select-bordered w-full">
             <option value="1">Sí</option>
             <option value="0">No</option>
         </select>
+        <span asp-validation-for="Moto.FotoSubida" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Usuario (temporal, se puede automatizar luego) -->
     <div>
         <label class="block text-sm font-medium mb-1">ID Usuario</label>
         <input asp-for="Moto.IdUsuario" type="number" class="input input-bordered w-full" placeholder="Ej: 1" />
+        <span asp-validation-for="Moto.IdUsuario" class="text-red-600 text-sm"></span>
     </div>
 
-    <!-- Botones -->
     <div class="flex justify-between items-center mt-6">
         <a href="/MotosEnTaller" class="btn btn-ghost">Cancelar</a>
         <button type="submit" class="btn bg-blue-500 text-white hover:bg-blue-600">
@@ -63,5 +64,6 @@
 </form>
 
 @section Scripts {
+    <partial name="_ValidationScriptsPartial" />
     <script>feather.replace()</script>
 }

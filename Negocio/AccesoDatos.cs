@@ -23,17 +23,27 @@ namespace Negocio
 
         public AccesoDatos()
         {
-            // Cargar variables del archivo .env
+            // Cargar variables del archivo .env (si no existen, ponemos defaults)
             Env.Load();
 
-            string password = Env.GetString("PG_PASSWORD");
-            // valores según base en PostgreSQL
-            conexion = new NpgsqlConnection("Host=localhost; Port=5432; Database=motoState; Username=postgres; Password={password}");
+            string host = Env.GetString("PG_HOST") ?? "localhost";
+            string port = Env.GetString("PG_PORT") ?? "5432";
+            string db = Env.GetString("PG_DATABASE") ?? "motoState";
+            string user = Env.GetString("PG_USER") ?? "postgres";
+            string password = Env.GetString("PG_PASSWORD") ?? "";
+
+            // IMPORTANTE: string interpolado con $ para usar variables
+            conexion = new NpgsqlConnection(
+                $"Host={host}; Port={port}; Database={db}; Username={user}; Password={password}"
+            );
+
             comando = new NpgsqlCommand();
         }
 
         public void SetearConsulta(string consulta)
         {
+            // Limpio parámetros de ejecuciones anteriores
+            comando.Parameters.Clear();
             comando.CommandType = CommandType.Text;
             comando.CommandText = consulta;
         }
@@ -46,9 +56,9 @@ namespace Negocio
                 conexion.Open();
                 lector = comando.ExecuteReader();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
@@ -60,9 +70,24 @@ namespace Negocio
                 conexion.Open();
                 comando.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
+            }
+        }
+
+        //cuando necesites un único valor (ej. RETURNING id)
+        public object EjecutarEscalar()
+        {
+            comando.Connection = conexion;
+            try
+            {
+                conexion.Open();
+                return comando.ExecuteScalar();
+            }
+            catch (Exception)
+            {
+                throw;
             }
         }
 
@@ -73,9 +98,14 @@ namespace Negocio
 
         public void CerrarConexion()
         {
-            if (lector != null && !lector.IsClosed)
-                lector.Close();
-            conexion.Close();
+            try
+            {
+                if (lector != null && !lector.IsClosed)
+                    lector.Close();
+                if (conexion.State != ConnectionState.Closed)
+                    conexion.Close();
+            }
+            catch { /* noop */ }
         }
 
         // Ejemplo: obtener id de un usuario por email
