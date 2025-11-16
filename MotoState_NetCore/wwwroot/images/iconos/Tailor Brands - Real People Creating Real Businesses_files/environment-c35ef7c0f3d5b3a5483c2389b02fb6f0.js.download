@@ -1,0 +1,3 @@
+define("print-store/config/environment",(function(){return{default:{modulePrefix:"print-store",podModulePrefix:"print-store/pods",rootURL:"/",locationType:"auto","ember-component-css":{terseClassNames:!1},phoneInput:{lazyLoad:!1}}}}))
+
+//# sourceMappingURL=environment-c35ef7c0f3d5b3a5483c2389b02fb6f0.map

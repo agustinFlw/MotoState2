@@ -1,0 +1,31 @@
+﻿@page
+@model MotoState__.NetCore_Razor.Pages.WelcomeModel
+@{
+    Layout = "_LayoutPublic";
+}
+
+<div class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 overflow-hidden">
+    <!-- Fondo con imagen -->
+    <div class="absolute inset-0 bg-[url('/images/background/taller-bg.jpg')] bg-cover bg-center"></div>
+    <!-- Capa oscura para contraste -->
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+    <h1 class="text-5xl font-bold mb-6 text-white z-10">¿Quién eres?</h1>
+    <p class="text-lg text-gray-200 mb-10 z-10">Consulta el estado de tu moto en segundos</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 z-10">
+        <a href="/Mecanico"
+           class="px-10 py-6 text-2xl text-white rounded-2xl shadow-2xl
+                  bg-white/10 backdrop-blur-md border border-white/30
+                  hover:shadow-2x1 hover:-translate-y-1 hover:bg-white/15 transition transform">
+            🔧 Mecánico
+        </a>
+
+        <a href="/Cliente"
+           class="px-10 py-6 text-2xl text-white rounded-2xl shadow-2xl
+                  bg-white/10 backdrop-blur-md border border-white/30
+                  hover:shadow-xl hover:-translate-y-1 hover:bg-white/15 transition transform">
+            🚲 Cliente
+        </a>
+    </div>
+</div>

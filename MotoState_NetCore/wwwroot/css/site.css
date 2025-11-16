@@ -20,3 +20,68 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+/* fuente logo */
+font-logo{
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+/* paleta.css */
+
+/* Clases de fondo */
+.bg-verde-intenso {
+    background-color: #003D28;
+}
+.bg-verde-intenso-10 {
+    background-color: #003D28;
+    background-color: rgba(0, 61, 40, 0.1); /* 10% de opacidad */
+}
+
+.bg-verde-oscuro {
+    background-color: #006B48;
+}
+
+.bg-verde-esmeralda {
+    background-color: #1D8B4C;
+}
+
+.bg-verde-medio {
+    background-color: #4A9A79;
+}
+
+.bg-verde-pastel {
+    background-color: #B6E3D1;
+}
+
+/* Clases de texto */
+.text-verde-intenso {
+    color: #003D28;
+}
+
+.text-verde-oscuro {
+    color: #006B48;
+}
+
+.text-verde-esmeralda {
+    color: #1D8B4C;
+}
+
+.text-verde-medio {
+    color: #4A9A79;
+}
+
+.text-verde-pastel {
+    color: #B6E3D1;
+}
+
+/* Ejemplo de uso */
+.color-box {
+    width: 150px;
+    height: 50px;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 5px;
+}

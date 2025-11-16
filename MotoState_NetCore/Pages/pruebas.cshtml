@@ -4,6 +4,52 @@
     ViewData["Title"] = "Pruebas";
 }
 
+<div class="relative flex flex-col items-center justify-center min-h-screen text-center px-4 overflow-hidden">
+    <!-- Fondo con imagen -->
+    <div class="absolute inset-0 bg-[url('/images/background/taller-bg.jpg')] bg-cover bg-center"></div>
+    <!-- Capa oscura para contraste -->
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+    <h1 class="text-5xl font-bold mb-6 text-white z-10">¿Quién eres?</h1>
+    <p class="text-lg text-gray-200 mb-10 z-10">Consulta el estado de tu moto en segundos</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 z-10">
+        <a href="/Mecanico" 
+           class="px-10 py-6 text-2xl text-white rounded-2xl shadow-2xl 
+                  bg-white/10 backdrop-blur-md border border-white/30 
+                  hover:shadow-2x1 hover:-translate-y-1 hover:bg-white/15 transition transform">
+            🔧 Mecánico
+        </a>
+
+        <a href="/Cliente" 
+           class="px-10 py-6 text-2xl text-white rounded-2xl shadow-2xl 
+                  bg-white/10 backdrop-blur-md border border-white/30 
+                  hover:shadow-xl hover:-translate-y-1 hover:bg-white/15 transition transform">
+            🚲 Cliente
+        </a>
+    </div>
+</div>
+
+
+<h1 class="text-4xl font-bold mb-4">Dies;o 4:</h1>
+<div class="relative flex flex-col items-center justify-center min-h-screen text-center text-white">
+    <!-- Fondo estilo CoolFix -->
+    <div class="absolute inset-0 bg-[url('/images/moto-workshop.jpg')] bg-cover bg-center"></div>
+    <div class="absolute inset-0 bg-black bg-opacity-60"></div>
+
+    <h1 class="text-5xl font-extrabold mb-6 z-10">Reparación Rápida de Motos</h1>
+    <p class="text-lg mb-8 z-10">Consulta el estado con tu patente o ingresa como mecánico</p>
+
+    <div class="flex space-x-6 z-10">
+        <a href="/Mecanico" class="px-6 py-3 bg-indigo-600 rounded-full shadow-lg hover:bg-indigo-700 hover:scale-105 transition">
+            🔧 Soy Mecánico
+        </a>
+        <a href="/Cliente" class="px-6 py-3 bg-green-600 rounded-full shadow-lg hover:bg-green-700 hover:scale-105 transition">
+            🚲 Ver Estado
+        </a>
+    </div>
+</div>
+
 <h2 class="text-2xl font-bold mb-6">Pizarra de Motos en el Taller</h2>
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

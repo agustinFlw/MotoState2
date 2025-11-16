@@ -24,7 +24,7 @@ app.MapRazorPages();
 // ?? Redirige la raíz "/" hacia la página MotosEnTaller.cshtml
 app.MapGet("/", context =>
 {
-    context.Response.Redirect("/MotosEnTaller");
+    context.Response.Redirect("/Welcome");
     return Task.CompletedTask;
 });
 
