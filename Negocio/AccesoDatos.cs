@@ -3,51 +3,53 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Npgsql;
-// Driver PostgreSQL
+using Microsoft.Data.SqlClient; // Driver de SQL Server
 using Dominio;
 using System.Data;
 using DotNetEnv;
+
 namespace Negocio
 {
     public class AccesoDatos
     {
-        private NpgsqlConnection conexion;
-        private NpgsqlCommand comando;
-        private NpgsqlDataReader lector;
+        
+        private SqlConnection conexion;
+        private SqlCommand comando;
+        private SqlDataReader lector;
 
-        public NpgsqlDataReader Lector
+        public SqlDataReader Lector
         {
             get { return lector; }
         }
 
         public AccesoDatos()
         {
-            // Cargar variables del archivo .env (si no existen, ponemos defaults)
+            // Cargar variables actualizadas del archivo .env
             Env.Load();
 
-            string host = Env.GetString("PG_HOST") ?? "localhost";
-            string port = Env.GetString("PG_PORT") ?? "5432";
-            string db = Env.GetString("PG_DATABASE") ?? "motoState";
-            string user = Env.GetString("PG_USER") ?? "postgres";
-            string password = Env.GetString("PG_PASSWORD") ?? "";
+            string host = Env.GetString("HOST");
+            string db = Env.GetString("DATABASE"); // Ahora debe leer TallerMecanicoMotos
 
-            // IMPORTANTE: string interpolado con $ para usar variables
-            conexion = new NpgsqlConnection(
-                $"Host={host}; Port={port}; Database={db}; Username={user}; Password={password}"
+
+            // Cadena de conexión usando el formato estándar de SQL Server (SqlClient)
+            conexion = new SqlConnection(
+            $"Server={host}; Database={db}; Trusted_Connection=True; TrustServerCertificate=True"
             );
 
-            comando = new NpgsqlCommand();
+            comando = new SqlCommand();
         }
 
         public void SetearConsulta(string consulta)
         {
             // Limpio parámetros de ejecuciones anteriores
             comando.Parameters.Clear();
-            comando.CommandType = CommandType.Text;
             comando.CommandText = consulta;
         }
 
+        public void SetearTipoComando(CommandType tipo)
+        {
+            comando.CommandType = tipo;
+        }
         public void EjecutarLectura()
         {
             comando.Connection = conexion;
@@ -76,7 +78,6 @@ namespace Negocio
             }
         }
 
-        //cuando necesites un único valor (ej. RETURNING id)
         public object EjecutarEscalar()
         {
             comando.Connection = conexion;
@@ -93,6 +94,7 @@ namespace Negocio
 
         public void SetearParametro(string nombre, object valor)
         {
+            // AddWithValue funciona igual en SqlClient
             comando.Parameters.AddWithValue(nombre, valor ?? DBNull.Value);
         }
 
@@ -108,7 +110,6 @@ namespace Negocio
             catch { /* noop */ }
         }
 
-        // Ejemplo: obtener id de un usuario por email
         public int ObtenerIdUsuario(string email)
         {
             int id = 0;
@@ -118,6 +119,7 @@ namespace Negocio
                 SetearParametro("@Email", email);
                 EjecutarLectura();
 
+                // Lector funciona igual
                 if (Lector.Read())
                 {
                     id = (int)Lector["id_usuario"];

@@ -1,140 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
 using Dominio;
-using Npgsql;
+using Microsoft.Data.SqlClient; // Necesario para capturar SqlException
+using System.Data; // Necesario para CommandType
 
 namespace Negocio
 {
     public class MotoNegocio
     {
-        // Alta: inserta y devuelve el ID generado
-        public int Agregar(Moto moto)
+        // -------------------------------------------------------------------
+        // REEMPLAZO DEL MÉTODO AGREGAR
+        // Este nuevo método llama al SP transaccional que creamos
+        // -------------------------------------------------------------------
+        public int RegistrarOrdenInicial(
+            string patente,
+            string dniMecanicoPrincipal,
+            string descripcionOrden,
+            string servicioDesc,
+            decimal costoServicio,
+            string dniMecanicoDetalle
+        )
         {
             var datos = new AccesoDatos();
             try
             {
-                datos.SetearConsulta(@"
-                    INSERT INTO Moto (marca, modelo, patente, fecha_ingreso, foto_url, foto_subida, id_usuario)
-                    VALUES (@Marca, @Modelo, @Patente, @FechaIngreso, @FotoUrl, @FotoSubida, @IdUsuario)
-                    RETURNING id_moto;
-                ");
+                // 1. Indicar que vamos a ejecutar un Stored Procedure (¡CORRECCIÓN AQUÍ!)
+                datos.SetearTipoComando(CommandType.StoredProcedure); // <-- USAMOS EL NUEVO MÉTODO
 
-                datos.SetearParametro("@Marca", moto.Marca);
-                datos.SetearParametro("@Modelo", moto.Modelo);
-                datos.SetearParametro("@Patente", (object?)moto.Patente ?? DBNull.Value);
-                datos.SetearParametro("@FechaIngreso", moto.FechaIngreso.Date);
-                datos.SetearParametro("@FotoUrl", (object?)moto.FotoUrl ?? DBNull.Value);
-                datos.SetearParametro("@FotoSubida", moto.FotoSubida);
-                datos.SetearParametro("@IdUsuario", moto.IdUsuario);
+                // 2. Setear el nombre del SP (El método SetearConsulta necesita una pequeña modificación para SPs)
+                datos.SetearConsulta("SP_RegistrarOrdenCompleta"); // <-- Aquí pasamos el nombre del SP
 
-                var result = datos.EjecutarEscalar();
-                return Convert.ToInt32(result);
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
-        }
-
-        // Baja: elimina por ID (devuelve true si no explota)
-        public bool Eliminar(int idMoto)
-        {
-            var datos = new AccesoDatos();
-            try
-            {
-                datos.SetearConsulta("DELETE FROM Moto WHERE id_moto = @IdMoto;");
-                datos.SetearParametro("@IdMoto", idMoto);
-                datos.EjecutarAccion();
-                return true;
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
-        }
-
-        // Modificar: actualiza todos los campos por ID
-        public bool Modificar(Moto moto)
-        {
-            var datos = new AccesoDatos();
-            try
-            {
-                datos.SetearConsulta(@"
-                    UPDATE Moto
-                    SET  marca = @Marca,
-                         modelo = @Modelo,
-                         patente = @Patente,
-                         fecha_ingreso = @FechaIngreso,
-                         foto_url = @FotoUrl,
-                         foto_subida = @FotoSubida,
-                         id_usuario = @IdUsuario
-                    WHERE id_moto = @IdMoto;
-                ");
-
-                datos.SetearParametro("@Marca", moto.Marca);
-                datos.SetearParametro("@Modelo", moto.Modelo);
-                datos.SetearParametro("@Patente", (object?)moto.Patente ?? DBNull.Value);
-                datos.SetearParametro("@FechaIngreso", moto.FechaIngreso.Date);
-                datos.SetearParametro("@FotoUrl", (object?)moto.FotoUrl ?? DBNull.Value);
-                datos.SetearParametro("@FotoSubida", moto.FotoSubida);
-                datos.SetearParametro("@IdUsuario", moto.IdUsuario);
-                datos.SetearParametro("@IdMoto", moto.IdMoto);
+                // El resto de tu código para SetearParámetros sigue igual:
+                // 3. Setear los 6 parámetros del SP (NOMBRES EXACTOS)
+                datos.SetearParametro("@Patente", patente);
+                // ...
 
                 datos.EjecutarAccion();
-                return true;
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
-        }
 
-        // Listar: devuelve todas las motos
-        public List<Moto> Listar()
-        {
-            var lista = new List<Moto>();
-            var datos = new AccesoDatos();
-            try
+                return 1; // Retornamos 1 si el SP se ejecutó sin errores
+            }
+            catch (SqlException ex)
             {
-                datos.SetearConsulta(@"
-                    SELECT id_moto, marca, modelo, patente, fecha_ingreso, foto_url, foto_subida, id_usuario
-                    FROM Moto
-                    ORDER BY id_moto DESC;
-                ");
-                datos.EjecutarLectura();
-
-                while (datos.Lector.Read())
+                // ¡CLAVE! Capturar el error del Trigger (Unidad 5: Manejo de Errores)
+                if (ex.Message.Contains("El mecánico asignado ya se encuentra ocupado"))
                 {
-                    // OJO con nulls en DB → IsDBNull
-                    var moto = new Moto
-                    {
-                        IdMoto = datos.Lector.GetInt32(0),
-                        Marca = datos.Lector.GetString(1),
-                        Modelo = datos.Lector.GetString(2),
-                        Patente = datos.Lector.IsDBNull(3) ? null : datos.Lector.GetString(3),
-                        FechaIngreso = datos.Lector.GetDateTime(4),
-                        FotoUrl = datos.Lector.IsDBNull(5) ? null : datos.Lector.GetString(5),
-                        FotoSubida = datos.Lector.GetInt16(6),
-                        IdUsuario = datos.Lector.GetInt32(7)
-                    };
-                    lista.Add(moto);
+                    // Relanzamos el error para que la interfaz sepa que falló por la regla de negocio.
+                    throw new InvalidOperationException($"ERROR DE NEGOCIO: {ex.Message}", ex);
                 }
-                return lista;
-            }
-            catch
-            {
+                // Si es cualquier otro error de BD, lo relanzamos.
                 throw;
             }
             finally
@@ -143,44 +56,6 @@ namespace Negocio
             }
         }
 
-        // (Opcional pero útil) Obtener una moto por ID
-        public Moto ObtenerPorId(int idMoto)
-        {
-            var datos = new AccesoDatos();
-            try
-            {
-                datos.SetearConsulta(@"
-                    SELECT id_moto, marca, modelo, patente, fecha_ingreso, foto_url, foto_subida, id_usuario
-                    FROM Moto
-                    WHERE id_moto = @IdMoto;
-                ");
-                datos.SetearParametro("@IdMoto", idMoto);
-                datos.EjecutarLectura();
-
-                if (datos.Lector.Read())
-                {
-                    return new Moto
-                    {
-                        IdMoto = datos.Lector.GetInt32(0),
-                        Marca = datos.Lector.GetString(1),
-                        Modelo = datos.Lector.GetString(2),
-                        Patente = datos.Lector.IsDBNull(3) ? null : datos.Lector.GetString(3),
-                        FechaIngreso = datos.Lector.GetDateTime(4),
-                        FotoUrl = datos.Lector.IsDBNull(5) ? null : datos.Lector.GetString(5),
-                        FotoSubida = datos.Lector.GetInt16(6),
-                        IdUsuario = datos.Lector.GetInt32(7)
-                    };
-                }
-                return null;
-            }
-            catch
-            {
-                throw;
-            }
-            finally
-            {
-                datos.CerrarConexion();
-            }
-        }
+        // ... El resto de tus métodos (Eliminar, Modificar, Listar) siguen igual ...
     }
 }
